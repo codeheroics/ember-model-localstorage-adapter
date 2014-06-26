@@ -93,7 +93,10 @@ Ember.LocalStorageAdapter = Ember.Adapter.extend({
         klass = record.constructor;
 
     return new Promise(function(resolve, reject) {
-      var newId = localStorage[classToString(klass) + '!nextId'] || "1";
+      var newId = record.get('id');
+      if (newId === undefined) {
+        newId = localStorage[classToString(klass) + '!nextId'] || "1";
+      }
       record.set(klass.primaryKey, newId);
       self._setItem(klass, newId, record.toJSON());
 
